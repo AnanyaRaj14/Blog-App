@@ -1,11 +1,7 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const cors = require("cors");
-require("dotenv").config(); // <== Add this
-
-// import models
-// const EmployeeModel = require('./models/Employee');
-// const BlogPost = require('./models/BlogPost');
+require("dotenv").config(); // To load environment variables from .env file
 
 // import routes
 const blogRoutes = require('./routes/blogRoutes');
@@ -18,6 +14,7 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 app.use(cors());
 
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -26,10 +23,20 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.log('Failed to connect MongoDB', err));
 
 
-// Use employee routes
+// Use routes
 app.use('/api/employee',employeeRoutes);
-// Use blog routes
 app.use('/api/blog', blogRoutes);
+
+// Handle 404 (Not Found) errors
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Route not found' });
+});
+  
+  // Global error handling middleware (for unexpected errors)
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+});
 
 // start the server
 app.listen(PORT, ()=> console.log(`Server started at PORT:${PORT}`));

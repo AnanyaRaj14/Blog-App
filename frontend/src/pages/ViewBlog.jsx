@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// src/pages/ViewBlog.js
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 

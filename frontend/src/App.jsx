@@ -26,15 +26,24 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
 
+
           {/* Private Routes */}
-          <Route path="/myblogs" element={<PrivateRoute><MyBlogs /></PrivateRoute>} />
+          {/* <Route path="/myblogs" element={<PrivateRoute><MyBlogs /></PrivateRoute>} />
           <Route path="/create" element={<PrivateRoute><CreateBlog /></PrivateRoute>} />
           <Route path="/get/:id" element={<PrivateRoute><ViewBlog /></PrivateRoute>} />
           <Route path="/update/:id" element={<PrivateRoute><UpdateBlog /></PrivateRoute>} />
-          <Route path="/delete/:id" element={<PrivateRoute><DeleteBlog /></PrivateRoute>} />
+          <Route path="/delete/:id" element={<PrivateRoute><DeleteBlog /></PrivateRoute>} /> */}
+
+
+          <Route path="/myblogs" element={<MyBlogs />} />
+          <Route path="/create" element={<CreateBlog />} />
+          <Route path="/get/:id" element={<ViewBlog />} />
+          <Route path="/update/:id" element={<UpdateBlog />} />
+          <Route path="/delete/:id" element={<DeleteBlog />} />
+
 
           <Route path="*" element={<NotFound />} />
-          
+
         </Routes>
       </div>
     </>
