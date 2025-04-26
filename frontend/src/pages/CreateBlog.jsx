@@ -1,11 +1,14 @@
 // src/pages/CreateBlog.js
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from 'js-cookie'
+import { AppContext } from "../components/context/Appcontext";
 
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const { user } = useContext(AppContext)
   const navigate = useNavigate();
 
   const handleCreateBlog = async (e) => {
@@ -15,10 +18,16 @@ const CreateBlog = () => {
       const response = await axios.post("http://localhost:8000/api/blog/create", {
         title,
         content,
+        author: user._id
+      }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`
+        }
       });
+      console.log(title, content, author);
       if (response.data.message === "Blog created successfully") {
         alert("Blog created successfully!");
-        navigate("/myblogs"); // Redirect to the user's blogs page
+        navigate("/myblogs");
       }
     } catch (error) {
       console.error("Error creating blog:", error);

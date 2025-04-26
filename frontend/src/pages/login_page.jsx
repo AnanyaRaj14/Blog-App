@@ -1,44 +1,38 @@
 // src/pages/login_page.js
-import { useCookies } from 'react-cookie';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
+import { AppContext } from "../components/context/Appcontext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [cookies, setCookie, getCookies] = useCookies("");
+  const { setUser, user } = useContext(AppContext)
 
-  // useEffect(() => {
-  //   // const user = localStorage.getItem("user");
-  //   if (user) navigate("/"); // redirect if already logged in
-  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/employee/login", { email, password });
+      const response = await axios.post("http://localhost:8000/api/employee/login", {
+        email, password
+      });
       console.log(response.data);
       if (response.data.message === "Login successful") {
-        // localStorage.setItem("user", JSON.stringify(response.data.user)); // save to localStorage
-       setCookie("token", response.data.token);
-       const token = response.data.token;
-       const decoded = jwtDecode(token);
-        console.log(decoded);
-      //  console.log(token);
-      // console.log(cookies.get("token"))
-       console.log(cookies.name);
+        Cookies.set('token', response.data.token); // Corrected
+        setUser(jwtDecode(response.data.token));   // Corrected
         alert("Login successful");
-        navigate("/"); // redirect after login
-  
+        navigate("/");
       }
     } catch (error) {
       console.error("Login error:", error);
       alert("Login failed: " + (error.response?.data?.message || error.message));
     }
   };
+  
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors">

@@ -1,17 +1,35 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import Cookies from 'js-cookie';
+import { jwtDecode } from "jwt-decode";
+import { AppContext } from "./context/Appcontext";
 
 const Header = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const { user, setUser } = useContext(AppContext)
 
   // Load user from localStorage on component mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("token");
+    // console.log(storedUser);
     setUser(storedUser ? JSON.parse(storedUser) : null);
-  });
+  },[]);
+
+  useEffect(() => {
+    const userToken = Cookies.get('token');
+    if (userToken) {
+      try {
+        const decoded = jwtDecode(userToken);
+        setUser(decoded);
+        console.log(decoded);
+      } catch (err) {
+        console.error("Invalid token:", err);
+      }
+    }
+  }, []);
+  
 
   // Apply dark mode class to HTML root
   useEffect(() => {
@@ -48,7 +66,7 @@ const Header = () => {
               <Link to="/myblogs" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">My Blogs</Link>
               <Link to="/update" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">Update</Link>
               <Link to="/delete" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">Remove</Link>
-              
+
               <button
                 onClick={handleLogout}
                 className="text-gray-700 dark:text-gray-300 hover:text-blue-500"

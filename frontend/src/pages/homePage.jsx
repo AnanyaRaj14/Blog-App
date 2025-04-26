@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import  Cookies  from "js-cookie";
 import { Link } from "react-router-dom";
+import { AppContext } from "../components/context/Appcontext";
 
 const Home = () => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+    const { user, setUser } = useContext(AppContext)
+    // console.log('user in homepage : ', user);
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -12,7 +17,8 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
+    Cookies.remove('token')
     setUser(null);
   };
 

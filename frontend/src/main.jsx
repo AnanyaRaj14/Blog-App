@@ -6,16 +6,14 @@ import './index.css'
 import App from './App.jsx'
 import { CookiesProvider } from 'react-cookie';
 import { BrowserRouter } from 'react-router-dom'
+import { AppProvider } from './components/context/Appcontext.jsx'
+
 
 
 createRoot(document.getElementById('root')).render(
-   
+   <AppProvider>
       <BrowserRouter>
-         <CookiesProvider>
-            <App/>
-         </CookiesProvider>
+         <App />
       </BrowserRouter>
-   
-    
-
+   </AppProvider>
 )
