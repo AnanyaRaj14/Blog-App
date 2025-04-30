@@ -1,9 +1,17 @@
 const BlogPostModel = require('../models/BlogPost');
 const EmployeeModel = require('../models/Employee');
+// const cloudinary = require('cloudinary').v2;
+
+
+// cloudinary.config({ 
+//     cloud_name: 'blogApp', 
+//     api_key: '958773492987471', 
+//     api_secret: '6fo-BfciWSOcXAG1Vz8nNl7v5Fg'
+//   });
 
 // Create any blog (POST)
 const createBlogPost = async (req, res) => {
-    const { title, content, author } = req.body;
+    const { title, content, author, image } = req.body;
 
     if (!title || !content || !author) {
         return res.status(400).json({ message: 'Title, content, and author are required.' });

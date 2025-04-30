@@ -6,9 +6,14 @@ require("dotenv").config(); // To load environment variables from .env file
 // import routes
 const blogRoutes = require('./routes/blogRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+// const fileUpload = require('express-fileupload'); 
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+// app.use(fileUpload({
+//     useTempFiles:true
+// }));
 
 // Middleware
 app.use(express.json());

@@ -6,6 +6,10 @@ const BlogPostSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    image: {
+        type: String,
+        required: false  
+    },
     content: {
         type: String,
         required: true,
