@@ -4,15 +4,21 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ViewBlog = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // get blog ID from URL
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/blog/get/${id}`)
-      .then((res) => setBlog(res.data))
-      .catch((err) => console.error("Error fetching blog:", err));
-  }, [id]);
+    const fetchBlog = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/blog/get/${id}`);
+        setBlog(response.data);
+      } catch (error) {
+        console.error("Error fetching blog:", error);
+      }
+    };
+
+    fetchBlog();
+  }, [id]); // dependency array to run only on mount or when id changes
 
   if (!blog) return <p className="text-center mt-12">Loading...</p>;
 

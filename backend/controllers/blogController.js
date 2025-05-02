@@ -31,16 +31,19 @@ const createBlogPost = async (req, res) => {
     }
 };
 
-// Get all blogs (GET)
-const getAllBlogs = (req, res) => {
-    BlogPostModel.find()
-        .populate('author', 'fullName email') // optional: to populate author details
-        .sort({ createdAt: -1 })
-        .then((posts) => res.json(posts))
-        .catch((err) =>
-            res.status(500).json({ message: 'Error fetching posts.', error: err.message })
-        );
+// get all blogs
+const getAllBlogs = async (req, res) => {
+    try {
+      const posts = await BlogPostModel.find({})
+        // .populate('author', 'fullName email')
+        // .sort({ createdAt: -1 });
+        console.log(posts);
+      res.json(posts);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching posts.', error: err.message });
+    }
 };
+  
 
 // Get single blog by ID (GET)
 const getSinglePostById = (req, res) => {

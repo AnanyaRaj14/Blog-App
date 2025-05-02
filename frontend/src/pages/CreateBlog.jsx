@@ -15,19 +15,20 @@ const CreateBlog = () => {
   const handleCreateBlog = async (e) => {
     e.preventDefault();
 
-    if (!user || !user._id) {
+    if (!user) {
       alert("User not logged in or missing author ID.");
       return;
     }
 
     try {
+      console.log(user);
       const response = await axios.post(
         "http://localhost:8000/api/blog/create", // Adjust this URL to your API
         {
           title,
           content,
-          image, // Send the image URL along with other blog data
-          author: user._id, // Send the author's ObjectId
+          // image, // Send the image URL along with other blog data
+          author: user.id, // Send the author's ObjectId
         },
         {
           headers: {
@@ -36,6 +37,7 @@ const CreateBlog = () => {
         }
       );
 
+      console.log(response.data);
       if (response.data.message === "Blog created successfully") {
         alert("Blog created successfully!");
         navigate("/myblogs"); // Redirect to the "my blogs" page after success
