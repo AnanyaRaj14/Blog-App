@@ -27,7 +27,11 @@ const BlogPostSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-});
+}, 
+  {
+    timestamps: true, // Enable Mongoose timestamps, which automatically adds createdAt and updatedAt
+  }
+);
 
 BlogPostSchema.pre('save', function (next) {
     this.updatedAt = Date.now();

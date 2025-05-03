@@ -30,9 +30,21 @@ const Header = () => {
     }
   }, []);
   
-
-  // Apply dark mode class to HTML root
+  // Load dark mode preference from localStorage
   useEffect(() => {
+    const storedMode = localStorage.getItem("darkMode");
+    if (storedMode === "true") {
+      setDarkMode(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      setDarkMode(false);
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  // Save dark mode preference to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode);
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
@@ -58,7 +70,7 @@ const Header = () => {
               <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">Home</Link>
               <Link to="/about" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">About</Link>
               <Link to="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">Login</Link>
-              <Link to="/signup" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">Signup</Link>
+              {/* <Link to="/signup" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">Signup</Link> */}
             </>
           ) : (
             <>

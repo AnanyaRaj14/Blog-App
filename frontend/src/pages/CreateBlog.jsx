@@ -27,7 +27,7 @@ const CreateBlog = () => {
         {
           title,
           content,
-          // image, // Send the image URL along with other blog data
+          image, // Send the image URL along with other blog data
           author: user.id, // Send the author's ObjectId
         },
         {
@@ -53,11 +53,12 @@ const CreateBlog = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (!file) return;
 
     try {
-      const imageUrl = await uploadImageToCloudinary(file); // Get the image URL from Cloudinary
-      setImage(imageUrl); // Save the image URL to state
+      const imageUrl = await uploadImageToCloudinary(file);
+      setImage(imageUrl); 
       alert("Image uploaded successfully!");
     } catch (err) {
       alert("Image upload failed");

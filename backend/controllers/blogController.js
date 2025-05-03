@@ -1,13 +1,6 @@
 const BlogPostModel = require('../models/BlogPost');
 const EmployeeModel = require('../models/Employee');
-// const cloudinary = require('cloudinary').v2;
 
-
-// cloudinary.config({ 
-//     cloud_name: 'blogApp', 
-//     api_key: '958773492987471', 
-//     api_secret: '6fo-BfciWSOcXAG1Vz8nNl7v5Fg'
-//   });
 
 // Create any blog (POST)
 const createBlogPost = async (req, res) => {
@@ -35,8 +28,6 @@ const createBlogPost = async (req, res) => {
 const getAllBlogs = async (req, res) => {
     try {
       const posts = await BlogPostModel.find({})
-        // .populate('author', 'fullName email')
-        // .sort({ createdAt: -1 });
         console.log(posts);
       res.json(posts);
     } catch (err) {
@@ -61,6 +52,20 @@ const getSinglePostById = (req, res) => {
         );
 };
 
+// Get latest blogs (sorted by createdAt, limit to 6)
+const getLatestBlogs = async (req, res) => {
+    try {
+      const latestPosts = await BlogPostModel.find()
+        .sort({ createdAt: -1 })
+        .limit(6)
+        // .populate('author', 'fullName email'); 
+        console.log("Returning latest posts:", latestPosts);
+      res.json(latestPosts);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching latest posts.', error: err.message });
+    }
+  };
+  
 // Update blog (PUT)
 const updatePost = (req, res) => {
     const { id } = req.params;
@@ -108,4 +113,4 @@ const deletePost = (req, res) => {
         );
 };
 
-module.exports = { createBlogPost, getAllBlogs, getSinglePostById, updatePost, deletePost };
+module.exports = { createBlogPost, getAllBlogs, getSinglePostById, getLatestBlogs, updatePost, deletePost };
