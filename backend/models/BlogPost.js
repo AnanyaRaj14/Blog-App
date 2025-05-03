@@ -19,14 +19,14 @@ const BlogPostSchema = new mongoose.Schema({
         ref: 'Employee', // Assuming the employee (user) is the author
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
+    // createdAt: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
+    // updatedAt: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
 }, 
   {
     timestamps: true, // Enable Mongoose timestamps, which automatically adds createdAt and updatedAt

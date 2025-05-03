@@ -27,6 +27,58 @@
   }
 }
 
+/* Fade in animation for elements */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade-in animation for slower effects */
+@keyframes fadeInSlow {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide up effect for button clicks */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply fade-in animation */
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+/* Apply slower fade-in for elements like subtext */
+.animate-fade-in-slow {
+  animation: fadeInSlow 1.2s ease-out forwards;
+}
+
+/* Slide up animation for buttons */
+.animate-slide-up {
+  animation: slideUp 1s ease-out forwards;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;

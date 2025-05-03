@@ -53,8 +53,22 @@ const CreateBlog = () => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    console.log(file);
     if (!file) return;
+
+    const data = new FormData()
+    data.append("file", file)
+    data.append("upload_preset", "blogApp");
+    data.append("cloud_name", "dvjf5bvsw" )
+
+    const res = await fetch("https://api.cloudinary.com/v1_1/dvjf5bvsw/image/upload",{
+      method:"POST",
+      body: data
+    })
+
+    const uploadedImageURL = await res.json();
+    console.log(uploadedImageURL.url);
+
+    console.log(file);
 
     try {
       const imageUrl = await uploadImageToCloudinary(file);

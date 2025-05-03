@@ -55,16 +55,18 @@ const getSinglePostById = (req, res) => {
 // Get latest blogs (sorted by createdAt, limit to 6)
 const getLatestBlogs = async (req, res) => {
     try {
-      const latestPosts = await BlogPostModel.find()
-        .sort({ createdAt: -1 })
-        .limit(6)
-        // .populate('author', 'fullName email'); 
-        console.log("Returning latest posts:", latestPosts);
-      res.json(latestPosts);
-    } catch (err) {
-      res.status(500).json({ message: 'Error fetching latest posts.', error: err.message });
+      const latestBlogs = await BlogPostModel.find({})
+        .sort({ createdAt: -1 }) // Sort by newest first
+        .limit(5);
+        
+        console.log(latestBlogs);
+      res.status(200).json(latestBlogs);
+    } catch (error) {
+      console.error('Error fetching latest blogs:', error);
+      res.status(500).json({ message: 'Server error' });
     }
   };
+  
   
 // Update blog (PUT)
 const updatePost = (req, res) => {
