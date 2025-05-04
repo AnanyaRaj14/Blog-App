@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../components/context/Appcontext";
-import { uploadImageToCloudinary } from "../utils"; // Corrected import
+// import { uploadImageToCloudinary } from "../utils"; // Corrected import
 
 const CreateBlog = () => {
   const [title, setTitle] = useState("");
@@ -40,13 +40,13 @@ const CreateBlog = () => {
       console.log(response.data);
       if (response.data.message === "Blog created successfully") {
         alert("Blog created successfully!");
-        navigate("/myblogs"); // Redirect to the "my blogs" page after success
+        navigate("/myblogs"); 
       }
     } catch (error) {
       console.error("Error creating blog:", error);
       alert(
         "Failed to create blog: " +
-          (error.response?.data?.message || error.message)
+        (error.response?.data?.message || error.message)
       );
     }
   };
@@ -54,30 +54,29 @@ const CreateBlog = () => {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    const data = new FormData()
-    data.append("file", file)
+  
+    const data = new FormData();
+    data.append("file", file);
     data.append("upload_preset", "blogApp");
-    data.append("cloud_name", "dvjf5bvsw" )
-
-    const res = await fetch("https://api.cloudinary.com/v1_1/dvjf5bvsw/image/upload",{
-      method:"POST",
-      body: data
-    })
-
-    const uploadedImageURL = await res.json();
-    console.log(uploadedImageURL.url);
-
-    console.log(file);
-
+    data.append("cloud_name", "dvjf5bvsw");
+  
     try {
-      const imageUrl = await uploadImageToCloudinary(file);
-      setImage(imageUrl); 
+      const res = await fetch("https://api.cloudinary.com/v1_1/dvjf5bvsw/image/upload", {
+        method: "POST",
+        body: data,
+      });
+  
+      const uploadedImageURL = await res.json();
+      console.log(uploadedImageURL.url); // Cloudinary image URL
+  
+      // Now set the image URL in the state
+      setImage(uploadedImageURL.url); // Set the image URL to state
       alert("Image uploaded successfully!");
     } catch (err) {
       alert("Image upload failed");
     }
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-6 mt-6 bg-white dark:bg-gray-800 rounded shadow">
@@ -115,9 +114,9 @@ const CreateBlog = () => {
 
         <button
           type="submit"
-          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+          className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition duration-300"
         >
-          Create Blog
+          🚀 Publish Blog
         </button>
       </form>
     </div>

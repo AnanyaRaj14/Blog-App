@@ -1,19 +1,14 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const cors = require("cors");
-require("dotenv").config(); // To load environment variables from .env file
+require("dotenv").config(); 
 
 // import routes
 const blogRoutes = require('./routes/blogRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
-// const fileUpload = require('express-fileupload'); 
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-
-// app.use(fileUpload({
-//     useTempFiles:true
-// }));
 
 // Middleware
 app.use(express.json());
@@ -27,7 +22,6 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.log('Failed to connect MongoDB', err));
 
-
 // Use routes
 app.use('/api/employee',employeeRoutes);
 app.use('/api/blog', blogRoutes);
@@ -37,11 +31,28 @@ app.use((req, res, next) => {
     res.status(404).json({ message: 'Route not found' });
 });
   
-  // Global error handling middleware (for unexpected errors)
+// Global error handling middleware (for unexpected errors)
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({ message: 'Internal Server Error' });
 });
+
+// Multer setUp
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, './uploads')
+//     },
+//     filename: function (req, file, cb) {
+     
+//       cb(null, Date.now()+  "-" + file.originalname)
+//     }
+//   })
+  
+// const upload = multer({ storage })
+
+// app.post("/single", upload.single("image") ,(req, res) => {
+// console.log(req.file);
+// })
 
 // start the server
 app.listen(PORT, ()=> console.log(`Server started at PORT:${PORT}`));

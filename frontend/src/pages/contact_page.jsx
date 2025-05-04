@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaTwitter, FaLinkedin, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Contact = () => {
   // States for form inputs and form submission feedback
@@ -13,7 +14,7 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Mock form submission (You can replace this with API call or backend handling)
+    // Mock form submission
     setTimeout(() => {
       setIsSubmitting(false);
       setFormStatus("Your message has been sent successfully!");
@@ -111,6 +112,48 @@ const Contact = () => {
               <p>{formStatus}</p>
             </div>
           )}
+
+          {/* Social Media Icons */}
+          <div className="mt-8 border-t pt-6 border-gray-200 dark:border-gray-700 text-center">
+            <p className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
+              Connect with me
+            </p>
+            <div className="flex justify-center gap-6">
+              {/* Twitter */}
+              <a
+                href="https://twitter.com/AnanyaRaj"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white bg-blue-400 hover:bg-blue-500 p-3 rounded-full transition-transform transform hover:scale-110"
+                title="Twitter"
+              >
+                <FaTwitter size={20} />
+              </a>
+
+              {/* LinkedIn */}
+              <a
+                href="https://linkedin.com/in/ananya-raj-796409297/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white bg-blue-700 hover:bg-blue-800 p-3 rounded-full transition-transform transform hover:scale-110"
+                title="LinkedIn"
+              >
+                <FaLinkedin size={20} />
+              </a>
+
+              {/* GitHub */}
+              <a
+                href="https://github.com/AnanyaRaj14"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white bg-gray-800 hover:bg-black p-3 rounded-full transition-transform transform hover:scale-110"
+                title="GitHub"
+              >
+                <FaGithub size={20} />
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

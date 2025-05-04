@@ -1,5 +1,4 @@
-// src/pages/login_page.js
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -10,8 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { setUser, user } = useContext(AppContext)
-
+  const { setUser } = useContext(AppContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +17,9 @@ const Login = () => {
       const response = await axios.post("http://localhost:8000/api/employee/login", {
         email, password
       });
-      console.log(response.data);
       if (response.data.message === "Login successful") {
-        Cookies.set('token', response.data.token); // Corrected
-        setUser(jwtDecode(response.data.token));   // Corrected
+        Cookies.set('token', response.data.token);
+        setUser(jwtDecode(response.data.token));
         alert("Login successful");
         navigate("/");
       }
@@ -31,15 +28,16 @@ const Login = () => {
       alert("Login failed: " + (error.response?.data?.message || error.message));
     }
   };
-  
-
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 dark:text-white mb-6">
-          Login to BlogApp
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors px-4 py-12">
+      <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-3xl p-10 w-full max-w-md transform transition hover:scale-[1.01] duration-300">
+        <h2 className="text-3xl font-extrabold text-center text-blue-600 dark:text-white mb-6">
+          Welcome Back to <span className="text-purple-600">TalkTrail</span>
         </h2>
+        <p className="text-center text-gray-600 dark:text-gray-400 text-sm mb-8">
+          Sign in to continue your blogging journey.
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
@@ -72,7 +70,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
           >
             Log In
           </button>

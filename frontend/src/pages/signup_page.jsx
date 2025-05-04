@@ -1,4 +1,3 @@
-// src/components/Signup.js
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios"; // Import the Axios instance
@@ -9,11 +8,6 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const user = localStorage.getItem("user");
-  //   if (user) navigate("/");
-  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +24,7 @@ const Signup = () => {
         email,
         password,
       });
-console.log(response.data);
+
       // Check if signup was successful
       if (response.data.message === "User created successfully") {
         alert("Signup successful");
@@ -42,13 +36,15 @@ console.log(response.data);
     }
   };
 
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 dark:text-white mb-6">
-          Sign Up to BlogApp
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-100 via-blue-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors px-4 py-12">
+      <div className="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-10 w-full max-w-md transform transition hover:scale-[1.02] duration-300">
+        <h2 className="text-3xl font-extrabold text-center text-blue-600 dark:text-white mb-6">
+          Join <span className="text-purple-600">TalkTrail</span>
         </h2>
+        <p className="text-center text-gray-600 dark:text-gray-400 text-sm mb-8">
+          Create your account to share your thoughts and stories.
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
@@ -109,7 +105,7 @@ console.log(response.data);
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
           >
             Sign Up
           </button>

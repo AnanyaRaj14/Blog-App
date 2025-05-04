@@ -9,21 +9,21 @@ const CLOUDINARY_UPLOAD_PRESET = '<your-upload-preset>';
  * @param {File} file - The file object to upload.
  * @returns {Promise<string>} - The URL of the uploaded file.
  */
-export const uploadToCloudinary = async (file) => {
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+// export const uploadToCloudinary = async (file) => {
+//   try {
+//     const formData = new FormData();
+//     formData.append('file', file);
+//     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
-    const response = await axios.post(CLOUDINARY_URL, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+//     const response = await axios.post(CLOUDINARY_URL, formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data',
+//       },
+//     });
 
-    return response.data.secure_url;
-  } catch (error) {
-    console.error('Cloudinary upload error:', error);
-    throw new Error('File upload failed.');
-  }
-};
+//     return response.data.secure_url;
+//   } catch (error) {
+//     console.error('Cloudinary upload error:', error);
+//     throw new Error('File upload failed.');
+//   }
+// };
