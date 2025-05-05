@@ -1,24 +1,28 @@
 // src/pages/ViewBlog.js
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const ViewBlog = () => {
-  const { id } = useParams(); // get blog ID from URL
+  const { id } = useParams();
+  const location = useLocation(); // Hook to access the current location object
   const [blog, setBlog] = useState(null);
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/api/blog/get/${id}`);
+        console.log("Fetched single blog:", response.data);
         setBlog(response.data);
       } catch (error) {
         console.error("Error fetching blog:", error);
       }
     };
 
-    fetchBlog();
-  }, [id]); // dependency array to run only on mount or when id changes
+    if (id) {
+      fetchBlog();
+    }
+  }, [id, location.key]); // Dependency on location.key ensures re-fetch on route change
 
   if (!blog) return <p className="text-center mt-12">Loading...</p>;
 

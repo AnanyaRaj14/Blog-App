@@ -12,12 +12,10 @@ const Header = () => {
   const location = useLocation();
   const { user, setUser } = useContext(AppContext);
 
-  // Detect route change to close menu
   useEffect(() => {
     setMenuOpen(false);
   }, [location]);
 
-  // Detect outside click to close menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -80,7 +78,7 @@ const Header = () => {
         {/* Hamburger (Mobile Only) */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-gray-700 dark:text-white focus:outline-none"
+          className="md:hidden text-gray-700 dark:text-white focus:outline-none hover:text-blue-600 dark:hover:text-blue-400 transition"
           aria-label="Toggle menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -96,22 +94,27 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           {!user ? (
             <>
-              <Link to="/" className="nav-link">Home</Link>
-              <Link to="/about" className="nav-link">About</Link>
-              <Link to="/login" className="nav-link">Login</Link>
+              <Link to="/" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Home</Link>
+              <Link to="/about" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">About</Link>
+              <Link to="/login" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Login</Link>
             </>
           ) : (
             <>
-              <Link to="/create" className="nav-link">Create</Link>
-              <Link to="/myblogs" className="nav-link">My Blogs</Link>
-              <Link to="/update" className="nav-link">Update</Link>
-              <Link to="/delete" className="nav-link">Remove</Link>
-              <button onClick={handleLogout} className="nav-link">Logout</button>
+              <Link to="/create" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Create</Link>
+              <Link to="/myblogs" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">My Blogs</Link>
+              <Link to="/update" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Update</Link>
+              <Link to="/delete" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Remove</Link>
+              <button
+                onClick={handleLogout}
+                className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition"
+              >
+                Logout
+              </button>
             </>
           )}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="theme-toggle"
+            className="bg-gray-200 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 px-3 py-1 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
             {darkMode ? "Light ☀️" : "Dark 🌙"}
           </button>
@@ -127,28 +130,27 @@ const Header = () => {
         <div className="flex flex-col p-4 space-y-2">
           {!user ? (
             <>
-              <Link to="/" className="nav-link-mobile">Home</Link>
-              <Link to="/about" className="nav-link-mobile">About</Link>
-              <Link to="/login" className="nav-link-mobile">Login</Link>
+              <Link to="/" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Home</Link>
+              <Link to="/about" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">About</Link>
+              <Link to="/login" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Login</Link>
             </>
           ) : (
             <>
-              <Link to="/create" className="nav-link-mobile">Create</Link>
-              <Link to="/myblogs" className="nav-link-mobile">My Blogs</Link>
-              <Link to="/update" className="nav-link-mobile">Update</Link>
-              <Link to="/delete" className="nav-link-mobile">Remove</Link>
-              <button onClick={handleLogout} className="nav-link-mobile text-left w-full">Logout</button>
+              <Link to="/create" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Create</Link>
+              <Link to="/myblogs" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">My Blogs</Link>
+              <Link to="/update" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Update</Link>
+              <Link to="/delete" className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">Remove</Link>
+              <button onClick={handleLogout} className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 text-left w-full transition">Logout</button>
             </>
           )}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="theme-toggle text-left"
+            className="text-gray-700 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 text-left transition"
           >
             {darkMode ? "Light ☀️" : "Dark 🌙"}
           </button>
         </div>
       </div>
-
     </header>
   );
 };

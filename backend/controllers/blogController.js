@@ -16,7 +16,7 @@ const createBlogPost = async (req, res) => {
             return res.status(404).json({ message: 'Author not found.' });
         }
 
-        const newPost = await BlogPostModel.create({ title, content, author });
+        const newPost = await BlogPostModel.create({ title, content, author, image });
         return res.status(201).json({ newPost, message: 'Blog created successfully.' });
 
     } catch (err) {
@@ -45,27 +45,37 @@ const getSinglePostById = (req, res) => {
             if (!post) {
                 return res.status(404).json({ message: 'Post not found.' });
             }
-            return res.json(post);
+            return res.status(200).json(post);
         })
         .catch((err) =>
             res.status(500).json({ message: 'Error fetching post.', error: err.message })
         );
 };
 
-// Get latest blogs (sorted by createdAt, limit to 6)
+// Get latest blogs (with pagination
 const getLatestBlogs = async (req, res) => {
     try {
-      const latestBlogs = await BlogPostModel.find({})
-        .sort({ createdAt: -1 }) // Sort by newest first
-        .limit(5);
-        
-        console.log(latestBlogs);
-      res.status(200).json(latestBlogs);
+      const { page = 1, limit = 6 } = req.query;
+      const pageNumber = parseInt(page);
+      const pageSize = parseInt(limit);
+  
+      const blogs = await BlogPostModel.find()
+        .sort({ createdAt: -1 })
+        .limit(pageSize)
+        .skip((pageNumber - 1) * pageSize)
+        .populate("author", "fullName");
+  
+      const totalBlogs = await BlogPostModel.countDocuments();
+  
+      const hasMore = pageNumber * pageSize < totalBlogs;
+  
+      res.status(200).json({ blogs, hasMore });
     } catch (error) {
-      console.error('Error fetching latest blogs:', error);
-      res.status(500).json({ message: 'Server error' });
+      res.status(500).json({ message: "Server error", error: error.message });
     }
-  };
+};
+  
+  
   
   
 // Update blog (PUT)

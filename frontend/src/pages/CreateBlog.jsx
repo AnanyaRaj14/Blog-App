@@ -23,12 +23,12 @@ const CreateBlog = () => {
     try {
       console.log(user);
       const response = await axios.post(
-        "http://localhost:8000/api/blog/create", // Adjust this URL to your API
+        "http://localhost:8000/api/blog/create", 
         {
           title,
           content,
-          image, // Send the image URL along with other blog data
-          author: user.id, // Send the author's ObjectId
+          image, 
+          author: user.id, 
         },
         {
           headers: {
@@ -37,10 +37,13 @@ const CreateBlog = () => {
         }
       );
 
-      console.log(response.data);
-      if (response.data.message === "Blog created successfully") {
+      console.log("Blog creation response:", response.data);
+      if (response.data.message === "Blog created successfully.") {
         alert("Blog created successfully!");
         navigate("/myblogs"); 
+      }
+      else {
+        console.warn("Unexpected message:", response.data.message);
       }
     } catch (error) {
       console.error("Error creating blog:", error);
@@ -106,11 +109,11 @@ const CreateBlog = () => {
         />
 
         {/* Preview the uploaded image */}
-        {image && (
+        {/* {image && (
           <div className="mt-4">
             <img src={image} alt="Preview" className="rounded shadow max-h-64" />
           </div>
-        )}
+        )} */}
 
         <button
           type="submit"

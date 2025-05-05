@@ -11,7 +11,7 @@ router.delete('/delete/:id', verifyToken, deletePost);
 
 // Public routes
 router.get('/getall', getAllBlogs);
-router.get('/:id', getSinglePostById);
+router.get('/get/:id', getSinglePostById);
 router.get('/latest', getLatestBlogs); 
 
 

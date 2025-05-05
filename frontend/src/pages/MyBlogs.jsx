@@ -26,23 +26,26 @@ const MyBlogs = () => {
     }
   };
 
-      useEffect(() => {
-          const userToken = Cookies.get('token');
-          if (userToken) {
-            try {
-              const decoded = jwtDecode(userToken);
-              setUser(decoded);
-              console.log(decoded);
-            } catch (err) {
-              console.error("Invalid token:", err);
-            }
-          }
-        }, []);
+  useEffect(() => {
+    const userToken = Cookies.get('token');
+    if (userToken) {
+      try {
+        const decoded = jwtDecode(userToken);
+        setUser(decoded);
+        console.log(decoded);
+      } catch (err) {
+        console.error("Invalid token:", err);
+      }
+    }
+  }, []);
 
 
   useEffect(() => {
+    if (user && user.id) {
       fetchBlog();
+    }
   }, [user]);
+
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900">
@@ -50,7 +53,7 @@ const MyBlogs = () => {
         My Blogs
       </h1>
 
-      {blogs === null ? (
+      {blogs.length === 0 ? (
         <p className="text-center text-gray-600 dark:text-gray-300">
           No blogs found.{" "}
           <Link to="/create" className="text-blue-500 underline">
@@ -64,6 +67,7 @@ const MyBlogs = () => {
               key={blog._id}
               className="bg-white dark:bg-gray-800 p-4 rounded shadow"
             >
+              <img src={blog.image} alt="image" />
               <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">
                 {blog.title}
               </h2>
