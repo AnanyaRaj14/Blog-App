@@ -9,8 +9,10 @@ const Home = () => {
   const { user, setUser } = useContext(AppContext);
   const [blogs, setBlogs] = useState([]);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true); // new state for pagination
+  const [hasMore, setHasMore] = useState(true); // state for pagination
+  const [loading, setLoading] = useState(false); // state for loading indicator
 
+  // Check for user on component mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -18,48 +20,49 @@ const Home = () => {
     }
   }, [setUser]);
 
-    // Initial load
-    useEffect(() => {
-      if (user) {
-        fetchBlogs(1);
-      }
-    }, [user, page]);
+  // Fetch blogs when the user is logged in or when the page changes
+  useEffect(() => {
+    if (user) {
+      fetchBlogs(page);
+    } else {
+      setBlogs([]);
+      setPage(1);
+      setHasMore(true);
+    }
+  }, [user, page]);
 
-  // Fetch blogs with pagination
+  // Function to fetch blogs from the backend
   const fetchBlogs = async (pageNumber) => {
+    setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:8000/api/blog/latest?page=${pageNumber}&limit=6`);
+      const res = await axios.get(
+        `http://localhost:8000/api/blog/latest?page=${pageNumber}&limit=6`
+      );
       const { blogs: newBlogs, hasMore: more } = res.data;
 
-      if (pageNumber === 1) {
-        setBlogs(newBlogs);
-      } else {
-        setBlogs(prev => [...prev, ...newBlogs]);
-      }
-
+      setBlogs((prev) => (pageNumber === 1 ? newBlogs : [...prev, ...newBlogs]));
       setHasMore(more);
     } catch (err) {
       console.error("Error fetching blogs:", err);
     }
+    setLoading(false);
   };
 
-  // Initial load
-  useEffect(() => {
-    if (user) {
-      fetchBlogs(1);
-    }
-  }, [user, page]);
-
+  // Function to load more blogs
   const handleLoadMore = () => {
-    const nextPage = page + 1;
-    fetchBlogs(nextPage);
-    setPage(nextPage);
+    if (hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
+  // Logout function
   const handleLogout = () => {
     Cookies.remove("token");
     localStorage.removeItem("user");
     setUser(null);
+    setBlogs([]);
+    setPage(1);
+    setHasMore(true);
   };
 
   return (
@@ -93,7 +96,7 @@ const Home = () => {
                     <div className="grid md:grid-cols-3 gap-8">
                       {blogs.map((blog) => (
                         <div
-                          key={blog._id}
+                          key={blog.id}
                           className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-300 transform hover:scale-105"
                         >
                           <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">
@@ -117,15 +120,19 @@ const Home = () => {
                       ))}
                     </div>
 
-                    {hasMore && (
-                      <div className="mt-10 text-center">
-                        <button
-                          onClick={handleLoadMore}
-                          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
-                        >
-                          Load More Blogs
-                        </button>
-                      </div>
+                    {loading ? (
+                      <div className="mt-10 text-center">Loading...</div>
+                    ) : (
+                      hasMore && (
+                        <div className="mt-10 text-center">
+                          <button
+                            onClick={handleLoadMore}
+                            className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+                          >
+                            Load More Blogs
+                          </button>
+                        </div>
+                      )
                     )}
                   </>
                 )}
@@ -174,81 +181,6 @@ const Home = () => {
         )}
       </main>
       <Footer />
-
-      {/* Floating Object Animation Styles */}
-      <style jsx>{`
-        @keyframes floating {
-          0% {
-            transform: translateX(0) translateY(0) scale(1);
-          }
-          25% {
-            transform: translateX(30px) translateY(20px) scale(1.1);
-          }
-          50% {
-            transform: translateX(-30px) translateY(-20px) scale(0.9);
-          }
-          75% {
-            transform: translateX(50px) translateY(40px) scale(1.05);
-          }
-          100% {
-            transform: translateX(0) translateY(0) scale(1);
-          }
-        }
-
-        .animate-floating-objects {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 10;
-          pointer-events: none;
-        }
-
-        .floating-object {
-          position: absolute;
-          border-radius: 50%;
-          opacity: 0.6;
-          animation: floating 10s ease-in-out infinite;
-        }
-
-        .floating-object:nth-child(1) {
-          width: 120px;
-          height: 120px;
-          animation-duration: 12s;
-          top: 10%;
-          left: 30%;
-          animation-delay: -3s;
-        }
-
-        .floating-object:nth-child(2) {
-          width: 100px;
-          height: 100px;
-          animation-duration: 8s;
-          top: 30%;
-          left: 60%;
-          animation-delay: -2s;
-        }
-
-        .floating-object:nth-child(3) {
-          width: 140px;
-          height: 140px;
-          animation-duration: 15s;
-          top: 60%;
-          left: 40%;
-          animation-delay: -1s;
-        }
-
-        .floating-object:nth-child(4) {
-          width: 110px;
-          height: 110px;
-          animation-duration: 10s;
-          top: 80%;
-          left: 80%;
-          animation-delay: -4s;
-        }
-      `}</style>
-
     </div>
   );
 };

@@ -37,22 +37,5 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal Server Error' });
 });
 
-// Multer setUp
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, './uploads')
-//     },
-//     filename: function (req, file, cb) {
-     
-//       cb(null, Date.now()+  "-" + file.originalname)
-//     }
-//   })
-  
-// const upload = multer({ storage })
-
-// app.post("/single", upload.single("image") ,(req, res) => {
-// console.log(req.file);
-// })
-
 // start the server
 app.listen(PORT, ()=> console.log(`Server started at PORT:${PORT}`));

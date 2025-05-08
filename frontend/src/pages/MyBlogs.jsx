@@ -7,12 +7,10 @@ import { jwtDecode } from "jwt-decode";
 
 const MyBlogs = () => {
   const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState([])
-  // const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState([]);
 
   const fetchBlog = async () => {
     try {
-      console.log(user);
       const response = await axios.get("http://localhost:8000/api/blog/getall");
 
       // Filter blogs authored by the current user
@@ -32,20 +30,17 @@ const MyBlogs = () => {
       try {
         const decoded = jwtDecode(userToken);
         setUser(decoded);
-        console.log(decoded);
       } catch (err) {
         console.error("Invalid token:", err);
       }
     }
   }, []);
 
-
   useEffect(() => {
     if (user && user.id) {
       fetchBlog();
     }
   }, [user]);
-
 
   return (
     <div className="min-h-screen p-6 bg-gray-100 dark:bg-gray-900">
@@ -67,7 +62,13 @@ const MyBlogs = () => {
               key={blog._id}
               className="bg-white dark:bg-gray-800 p-4 rounded shadow"
             >
-              <img src={blog.image} alt="image" />
+              {blog.image && (
+                <img
+                  src={blog.image}
+                  alt="blog"
+                  className="w-full h-40 object-cover rounded mb-4"
+                />
+              )}
               <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">
                 {blog.title}
               </h2>
@@ -76,7 +77,7 @@ const MyBlogs = () => {
               </p>
               <div className="flex justify-between text-sm">
                 <Link
-                  to={`/get/${blog._id}`}
+                  to={`/get/${blog._id}`} 
                   className="text-blue-500 hover:underline"
                 >
                   View

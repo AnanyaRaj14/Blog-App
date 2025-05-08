@@ -7,12 +7,12 @@ const router  = express.Router();
 router.post('/create', verifyToken, createBlogPost);
 router.put('/update/:id', verifyToken, updatePost);
 router.delete('/delete/:id', verifyToken, deletePost);
-
+router.get('/latest', verifyToken, getLatestBlogs); 
 
 // Public routes
 router.get('/getall', getAllBlogs);
 router.get('/get/:id', getSinglePostById);
-router.get('/latest', getLatestBlogs); 
+
 
 
 

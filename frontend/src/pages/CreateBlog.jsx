@@ -108,13 +108,6 @@ const CreateBlog = () => {
           className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100"
         />
 
-        {/* Preview the uploaded image */}
-        {/* {image && (
-          <div className="mt-4">
-            <img src={image} alt="Preview" className="rounded shadow max-h-64" />
-          </div>
-        )} */}
-
         <button
           type="submit"
           className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition duration-300"
