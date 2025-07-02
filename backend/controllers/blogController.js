@@ -29,7 +29,7 @@ const getAllBlogs = async (req, res) => {
     try {
       const posts = await BlogPostModel.find({})
         console.log(posts);
-      res.json(posts);
+      return res.status(200).json(posts);
     } catch (err) {
       res.status(500).json({ message: 'Error fetching posts.', error: err.message });
     }
@@ -39,12 +39,14 @@ const getAllBlogs = async (req, res) => {
 // Get single blog by ID (GET)
 const getSinglePostById = (req, res) => {
     const { id } = req.params;
+
     BlogPostModel.findById(id)
         .populate('author', 'fullName email') // optional
         .then((post) => {
             if (!post) {
                 return res.status(404).json({ message: 'Post not found.' });
             }
+            console.log(post);
             return res.status(200).json(post);
         })
         .catch((err) =>
@@ -77,19 +79,18 @@ const getLatestBlogs = async (req, res) => {
   
   
   
-  
-// Update blog (PUT)
+ // Update blog (POST)
 const updatePost = (req, res) => {
     const { id } = req.params;
-    const { title, content, author } = req.body;
+    const { title, content, image } = req.body;
 
-    if (!title || !content || !author) {
-        return res.status(400).json({ message: 'Title, content, and author are required.' });
+    if (!title || !content) {
+        return res.status(400).json({ message: 'Title and content are required.' });
     }
 
     BlogPostModel.findByIdAndUpdate(
         id,
-        { title, content, author, updatedAt: Date.now() },
+        { title, content, image, updatedAt: Date.now() },
         { new: true }
     )
         .then((updatedPost) => {
@@ -103,14 +104,17 @@ const updatePost = (req, res) => {
         );
 };
 
+
 // Delete blog (DELETE)
 const deletePost = (req, res) => {
     const { id } = req.params;
 
     // Optional role-based restriction
-    if (req.user.role !== "ADMIN") {
-        return res.status(403).json({ message: "Only admins can delete posts." });
-    }
+    // if (req.user.role !== "ADMIN") {
+    //     return res.status(403).json({ message: "Only admins can delete posts." });
+    // }
+
+    console.log(id);
 
 
     BlogPostModel.findByIdAndDelete(id)
@@ -118,7 +122,7 @@ const deletePost = (req, res) => {
             if (!deletedPost) {
                 return res.status(404).json({ message: 'Post not found.' });
             }
-            res.json({ message: 'Post deleted successfully.' });
+           return res.status(200).json({ message: 'Post deleted successfully.' });
         })
         .catch((err) =>
             res.status(500).json({ message: 'Error deleting post.', error: err.message })

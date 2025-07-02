@@ -1,15 +1,18 @@
 // src/pages/UpdateBlog.js
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { uploadImageToCloudinary } from "../utils"; // Make sure this function is available
+import { AppContext } from "../components/context/Appcontext";
 
 const UpdateBlog = () => {
   const { id } = useParams();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const { blog, setBlog, author, setAuthor } = useContext(AppContext);
+  const [title, setTitle] = useState(blog?.title || "");
+  const [content, setContent] = useState(blog?.content || "");
   const [image, setImage] = useState(""); // State to hold current image URL
   const [imageToUpload, setImageToUpload] = useState(null); // State for the new image file
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -118,11 +121,11 @@ const UpdateBlog = () => {
           {/* Submit Button */}
           <div className="text-center">
             <button
-          type="submit"
-          className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition duration-300"
-        >
-          Update Blog
-        </button>
+              type="submit"
+              className="w-full py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow hover:from-blue-700 hover:to-purple-700 transition duration-300"
+            >
+              Update Blog
+            </button>
           </div>
         </form>
       </div>

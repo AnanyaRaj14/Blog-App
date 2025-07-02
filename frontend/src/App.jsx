@@ -38,8 +38,10 @@ function App() {
           <Route path="/myblogs" element={<MyBlogs />} />
           <Route path="/create" element={<CreateBlog />} />
           <Route path="/get/:id" element={<ViewBlog />} />
+          <Route path="/blog/:id" element={<ViewBlog />} />
           <Route path="/update/:id" element={<UpdateBlog />} />
           <Route path="/delete/:id" element={<DeleteBlog />} />
+
 
 
           <Route path="*" element={<NotFound />} />

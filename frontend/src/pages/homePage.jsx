@@ -36,12 +36,12 @@ const Home = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/blog/latest?page=${pageNumber}&limit=6`
+        `http://localhost:8000/api/blog/getall`
       );
-      const { blogs: newBlogs, hasMore: more } = res.data;
+      // console.log('response', res.data);
 
-      setBlogs((prev) => (pageNumber === 1 ? newBlogs : [...prev, ...newBlogs]));
-      setHasMore(more);
+      setBlogs(res.data);
+      // setHasMore(more);
     } catch (err) {
       console.error("Error fetching blogs:", err);
     }
@@ -87,16 +87,16 @@ const Home = () => {
 
             <section className="py-12 px-4">
               <div className="max-w-6xl mx-auto">
-                {blogs.length === 0 ? (
+                {blogs?.length === 0 ? (
                   <p className="text-center text-gray-500 dark:text-gray-400">
                     No recent blogs found. Create your first post!
                   </p>
                 ) : (
                   <>
                     <div className="grid md:grid-cols-3 gap-8">
-                      {blogs.map((blog) => (
+                      {blogs?.map((blog) => (
                         <div
-                          key={blog.id}
+                          key={blog._id}
                           className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-300 transform hover:scale-105"
                         >
                           <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-white">

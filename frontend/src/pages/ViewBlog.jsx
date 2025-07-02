@@ -1,27 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import { AppContext } from "../components/context/Appcontext";
 
 const ViewBlog = () => {
   const { id } = useParams();
   const location = useLocation();
-  const [blog, setBlog] = useState(null);
+  const {blog, setBlog, author, setAuthor} = useContext(AppContext);
 
+  // First fetch the blog
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/blog/get/${id}`);
-        console.log("Fetched single blog:", response.data);
-        setBlog(response.data);
+        const response = await axios.get(`http://localhost:8000/api/blog/getall`);
+        const foundBlog = response.data.find((blog) => blog._id === id);
+        setBlog(foundBlog);
       } catch (error) {
         console.error("Error fetching blog:", error);
       }
     };
 
-    if (id) {
-      fetchBlog();
-    }
+    if (id) fetchBlog();
   }, [id, location.key]);
+
+  // Then fetch the author once blog is available
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/employee/getall`);
+        const foundAuthor = response.data.find((author) => author._id === blog?.author);
+        setAuthor(foundAuthor);
+      } catch (error) {
+        console.error("Error fetching authors:", error);
+      }
+    };
+
+    if (blog?.author) fetchAuthor();
+  }, [blog]);
 
   if (!blog) return <p className="text-center mt-12">Loading...</p>;
 
@@ -40,8 +55,8 @@ const ViewBlog = () => {
       )}
 
       <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
-        {blog.author?.fullName ? (
-          <span>By <strong>{blog.author.fullName}</strong></span>
+        {author?.fullName ? (
+          <span>By <strong>{author.fullName}</strong></span>
         ) : (
           <span>By <strong>Unknown Author</strong></span>
         )}
